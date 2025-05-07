@@ -48,7 +48,7 @@ jobs:
       # Download the Python script needed for automation
       - name: Download run.py from your fork
         run: |
-          curl https://raw.githubusercontent.com/your-username/Zotero2Readwise/master/zotero2readwise/run.py -o run.py
+          curl https://raw.githubusercontent.com/daleharris0509/Zotero2Readwise/master/zotero2readwise/run.py -o run.py
 
       # Run the automation
       - name: Run automation
