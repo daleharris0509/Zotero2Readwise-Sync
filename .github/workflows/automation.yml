@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies (with force install)
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade pyzotero  # Force upgrade pyzotero
+          pip install git+https://github.com/pyzotero/pyzotero.git  # Force install pyzotero from GitHub
           pip install --upgrade zotero2readwise  # Force upgrade zotero2readwise
 
       # Step 4: Debugging: Show installed versions of pyzotero and zotero2readwise
