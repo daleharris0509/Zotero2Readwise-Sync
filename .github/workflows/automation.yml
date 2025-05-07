@@ -5,51 +5,43 @@ on:
     branches:
       - master
   schedule:
-    - cron: "0 */6 * * *"  # Runs at 3:00 AM UTC every 6 hours (you can adjust this)
+    - cron: "0 */6 * * *"  # Runs every 6 hours at 3:00 AM UTC
 
 jobs:
   zotero-to-readwise-automation:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the code
+      # Step 1: Checkout the code
       - name: Checkout the repo
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
 
-      # Set up Python
+      # Step 2: Set up Python 3.9
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: '3.9'
 
-      # Install dependencies
-      - name: Install dependencies
+      # Step 3: Upgrade pip and force install dependencies
+      - name: Install dependencies (with force install)
         run: |
           python -m pip install --upgrade pip
-          pip install zotero2readwise
+          pip install --upgrade pyzotero  # Force upgrade pyzotero
+          pip install --upgrade zotero2readwise  # Force upgrade zotero2readwise
 
-      # Debug: Check the version of zotero2readwise installed
-      - name: Check installed zotero2readwise version
+      # Step 4: Debugging: Show installed versions of pyzotero and zotero2readwise
+      - name: Show installed pyzotero and zotero2readwise versions
         run: |
+          pip show pyzotero
           pip show zotero2readwise
 
-      # Debug: List the files in the relevant directory to ensure you're using the correct one
-      - name: List files in the site-packages directory
-        run: |
-          ls /opt/hostedtoolcache/Python/3.9.22/x64/lib/python3.9/site-packages/zotero2readwise/
-
-      # Debug: Check the contents of zotero.py
-      - name: Print the first 20 lines of zotero.py
-        run: |
-          head -n 20 /opt/hostedtoolcache/Python/3.9.22/x64/lib/python3.9/site-packages/zotero2readwise/zotero.py
-
-      # Download the Python script needed for automation
-      - name: Download run.py from your fork
+      # Step 5: Download run.py from your fork (make sure to reference your fork)
+      - name: Download the Python script needed for automation
         run: |
           curl https://raw.githubusercontent.com/daleharris0509/Zotero2Readwise/master/zotero2readwise/run.py -o run.py
 
-      # Run the automation
+      # Step 6: Run the automation
       - name: Run automation
         run: python run.py ${{ secrets.READWISE_TOKEN }} ${{ secrets.ZOTERO_KEY }} ${{ secrets.ZOTERO_ID }}
